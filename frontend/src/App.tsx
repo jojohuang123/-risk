@@ -53,7 +53,10 @@ function App() {
     })
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      // In production (Vercel), we use relative path to route through vercel.json rewrites
+      // In development, we use VITE_API_URL or default to localhost:3000
+      const apiUrl = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
+      
       const response = await axios.post(`${apiUrl}/api/analyze`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
