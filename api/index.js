@@ -7,8 +7,20 @@ const OpenAI = require('openai');
 require('dotenv').config();
 
 // Initialize OpenAI Client for Volcengine Ark
+const apiKey = process.env.ARK_API_KEY;
+// Use user provided model ID as fallback if env var is missing
+const modelId = process.env.ARK_MODEL_ID || 'ep-20260210172824-cczbh';
+
+if (!apiKey) {
+    console.warn('Warning: ARK_API_KEY is missing in environment variables!');
+}
+
+if (!process.env.ARK_MODEL_ID) {
+    console.warn(`Warning: ARK_MODEL_ID is missing, using fallback: ${modelId}`);
+}
+
 const client = new OpenAI({
-    apiKey: process.env.ARK_API_KEY,
+    apiKey: apiKey,
     baseURL: 'https://ark.cn-beijing.volces.com/api/v3',
 });
 
@@ -119,9 +131,14 @@ JSON 数据结构必须严格如下：
         }
 
         // 3. Call the model
-        console.log('Calling Doubao model...');
+        console.log('Calling Doubao model:', modelId);
+        
+        if (!apiKey) {
+            throw new Error('ARK_API_KEY 未配置，请在 Vercel 环境变量中添加');
+        }
+
         const completion = await client.chat.completions.create({
-            model: process.env.ARK_MODEL_ID,
+            model: modelId,
             messages: [
                 {
                     role: 'user',
