@@ -19,22 +19,8 @@ const port = 3000;
 app.use(cors());
 
 // Configure Multer for file uploads
-// Store files in 'uploads' directory
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        // Keep original extension
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
-});
+// Use MemoryStorage for Vercel/Serverless environments
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
     storage: storage,
@@ -107,15 +93,13 @@ JSON 数据结构必须严格如下：
             }
         ];
 
-        // 2. Read images and append to content
+        // 2. Read image files and convert to base64
         for (const file of req.files) {
-            const imageBuffer = fs.readFileSync(file.path);
-            const base64Image = imageBuffer.toString('base64');
-            // Determine mime type roughly
-            const ext = path.extname(file.originalname).toLowerCase();
-            let mimeType = 'image/jpeg';
-            if (ext === '.png') mimeType = 'image/png';
-            if (ext === '.webp') mimeType = 'image/webp';
+            // With MemoryStorage, file.buffer contains the data
+            const base64Image = file.buffer.toString('base64');
+            
+            // Determine mime type roughly or use file.mimetype
+            const mimeType = file.mimetype || 'image/jpeg';
 
             contentParts.push({
                 type: 'image_url',
@@ -158,30 +142,22 @@ JSON 数据结构必须严格如下：
             return res.status(500).json({ success: false, message: 'AI 生成格式解析失败', raw: aiContent });
         }
 
-        // 5. Cleanup uploaded files
-        for (const file of req.files) {
-            fs.unlink(file.path, (err) => {
-                if (err) console.error('Error deleting file:', file.path, err);
-            });
-        }
+        // 5. Cleanup - No need to cleanup files with MemoryStorage as they are in memory
 
         res.json({ success: true, data: parsedResult });
 
     } catch (error) {
         console.error('Analysis Error:', error);
         res.status(500).json({ success: false, message: '服务器内部错误: ' + error.message });
-        
-        // Cleanup files on error
-        if (req.files) {
-            for (const file of req.files) {
-                fs.unlink(file.path, (err) => {
-                    if (err) console.error('Error deleting file:', file.path, err);
-                });
-            }
-        }
     }
 });
 
-app.listen(port, () => {
-    console.log(`Backend server running at http://localhost:${port}`);
-});
+// Export app for Vercel
+module.exports = app;
+
+// Only listen if run directly (not imported as a module)
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Backend server running at http://localhost:${port}`);
+    });
+}
