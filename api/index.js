@@ -41,7 +41,10 @@ app.get('/', (req, res) => {
 
 // Analyze endpoint
 app.post('/api/analyze', (req, res, next) => {
-    upload.array('images', 20)(req, res, (err) => {
+    // Note: Vercel serverless functions have a 4.5MB payload limit by default.
+    // We are using memoryStorage, so large files might hit memory limits or timeouts.
+    // For production, we should handle this gracefully or suggest fewer images.
+    upload.array('images', 5)(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             return res.status(400).json({ success: false, message: '文件上传错误: ' + err.message });
         } else if (err) {
@@ -50,8 +53,8 @@ app.post('/api/analyze', (req, res, next) => {
         next();
     });
 }, async (req, res) => {
-    if (!req.files || req.files.length < 5) {
-        return res.status(400).json({ success: false, message: '请至少上传 5 张图片' });
+    if (!req.files || req.files.length < 2) {
+        return res.status(400).json({ success: false, message: '请至少上传 2 张图片' });
     }
 
     try {
