@@ -36,6 +36,52 @@ function App() {
     return () => clearInterval(interval);
   }, [analyzing]);
 
+  // Image compression helper
+  const compressImage = async (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Max dimension 1024px
+          const MAX_SIZE = 1024;
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Canvas to Blob failed'));
+            }
+          }, 'image/jpeg', 0.7); // Compress to JPEG with 0.7 quality
+        };
+        img.onerror = (error) => reject(error);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const handleAnalyze = async () => {
     if (fileList.length < 2) {
       Toast.fail('为了准确分析，请至少上传 2 张截图')
@@ -45,14 +91,25 @@ function App() {
     setAnalyzing(true)
     setResult(null)
 
-    const formData = new FormData()
-    fileList.forEach((item) => {
-      if (item.file) {
-        formData.append('images', item.file)
-      }
-    })
-
     try {
+      const formData = new FormData()
+      
+      // Compress and append images
+      const compressPromises = fileList.map(async (item) => {
+        if (item.file) {
+          try {
+            const compressedBlob = await compressImage(item.file);
+            formData.append('images', compressedBlob, item.file.name);
+          } catch (e) {
+            console.error('Compression failed for file:', item.file.name, e);
+            // Fallback to original if compression fails
+            formData.append('images', item.file);
+          }
+        }
+      });
+
+      await Promise.all(compressPromises);
+
       // In production (Vercel), we use relative path to route through vercel.json rewrites
       // In development, we use VITE_API_URL or default to localhost:3000
       const apiUrl = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
@@ -69,9 +126,17 @@ function App() {
       } else {
         Toast.fail('分析失败: ' + (response.data.message || '未知错误'))
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
-      Toast.fail('网络请求失败，请稍后重试')
+      const status = error.response?.status;
+      const serverMsg = error.response?.data?.message || error.message;
+      
+      let userMsg = '网络请求失败，请稍后重试';
+      if (status === 413) userMsg = '图片总大小太大，请减少图片数量或截图范围';
+      if (status === 504) userMsg = 'AI 思考太久超时了，请重试';
+      if (status === 500) userMsg = '服务器出错了，可能是 API Key 没配置';
+      
+      Toast.fail(`${userMsg} (${status || 'Error'}: ${serverMsg})`);
     } finally {
       setAnalyzing(false)
     }
