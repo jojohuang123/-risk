@@ -1,0 +1,9 @@
+:root {
+  --van-primary-color: #ff9f43; /* Pastel Orange for Hand-drawn theme */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* Background and font handled in App.css */
+}

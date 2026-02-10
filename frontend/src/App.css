@@ -1,0 +1,431 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+/* Reset & Base */
+:root {
+  --primary-color: #ff9f43; /* Pastel Orange */
+  --secondary-color: #54a0ff; /* Pastel Blue */
+  --accent-color: #ff6b6b; /* Pastel Red */
+  --bg-color: #fdfcf0; /* Paper-like off-white */
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --card-bg: #ffffff;
+  --border-color: #2d3436;
+}
+
+body {
+  margin: 0;
+  font-family: 'Patrick Hand', 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(#d1d8e0 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 60px;
+}
+
+/* Header Background - Cute & Wavy */
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 280px;
+  background: #ffcccc;
+  border-radius: 0 0 50% 50% / 0 0 100px 100px;
+  z-index: 0;
+  border-bottom: 3px solid var(--border-color);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Hero Section */
+.hero-text {
+  text-align: center;
+  color: var(--text-primary);
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.hero-text h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 3px 3px 0px white, 5px 5px 0px rgba(0,0,0,0.1);
+  transform: rotate(-2deg);
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  background: white;
+  display: inline-block;
+  padding: 5px 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  transform: rotate(1deg);
+}
+
+/* Card Styles - Hand Drawn */
+.card {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px) rotate(0.5deg);
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  border-bottom: 2px dashed #dfe6e9;
+  padding-bottom: 10px;
+}
+
+/* Upload Section */
+.upload-card {
+  background: #fff;
+  transform: rotate(1deg);
+}
+
+.upload-area {
+  border: 3px dashed #b2bec3;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fdfdfd;
+  transition: all 0.3s;
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: var(--secondary-color);
+  background: #f0f8ff;
+  transform: scale(1.02);
+}
+
+.upload-hint p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.upload-hint span {
+  font-size: 0.9rem;
+  color: #a4b0be;
+}
+
+.analyze-btn {
+  font-family: 'Patrick Hand', cursive !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  height: 55px !important;
+  background: var(--primary-color) !important;
+  border: 2px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 4px 4px 0px var(--border-color) !important;
+  border-radius: 10px !important;
+  transition: all 0.1s !important;
+}
+
+/* Force override for inner text */
+.analyze-btn span, 
+.rv-button__text,
+.rv-button__content {
+  font-family: 'Patrick Hand', cursive !important;
+  color: var(--text-primary) !important;
+}
+
+.analyze-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--border-color) !important;
+}
+
+.analyze-btn.van-button--disabled {
+  background: #dfe6e9 !important;
+  opacity: 1 !important;
+  color: #b2bec3 !important;
+}
+
+/* Loading State */
+.loading-state {
+  margin-top: 30px;
+  background: white;
+  padding: 30px;
+  border: 2px solid var(--border-color);
+  border-radius: 15px;
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+}
+
+/* Result Header */
+.result-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.result-header h2 {
+  display: inline-block;
+  background: #fff;
+  border: 2px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 1.8rem;
+  box-shadow: 4px 4px 0px #ff9f43;
+  transform: rotate(-2deg);
+}
+
+/* Danger Card - Now "Fun Meter" */
+.danger-card {
+  background: #fff;
+  border: 3px solid var(--border-color);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.danger-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ff9f43,
+    #ff9f43 10px,
+    #fff 10px,
+    #fff 20px
+  );
+  border-bottom: 2px solid var(--border-color);
+}
+
+.danger-header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.danger-title {
+  font-size: 1.5rem;
+  background: #ff6b6b;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 15px;
+  border: 2px solid var(--border-color);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.danger-meter-container {
+  margin: 20px 0;
+  position: relative;
+}
+
+/* Custom Meter */
+.hand-drawn-meter {
+  width: 200px;
+  height: 30px;
+  border: 3px solid var(--border-color);
+  border-radius: 20px;
+  background: #fff;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.meter-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    #ff6b6b,
+    #ff6b6b 10px,
+    #ff4757 10px,
+    #ff4757 20px
+  );
+  border-right: 3px solid var(--border-color);
+  transition: width 1s ease-out;
+}
+
+.danger-score {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-top: 10px;
+  text-shadow: 2px 2px 0px #fff;
+}
+
+.danger-level-badge {
+  display: inline-block;
+  margin-top: 10px;
+  background: #54a0ff;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 2px solid var(--border-color);
+  font-size: 1.2rem;
+  transform: rotate(-1deg);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.danger-warning {
+  background: #fff200;
+  border: 2px solid var(--border-color);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  font-weight: 700;
+  transform: rotate(1deg);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+/* Toxic Traits */
+.toxic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.toxic-item {
+  background: #fff;
+  padding: 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px 20px 15px 25px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+}
+
+.toxic-tag {
+  display: inline-block;
+  background: #2d3436;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  transform: rotate(-1deg);
+}
+
+.toxic-roast {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* MBTI */
+.mbti-card {
+  background: #e0f7fa;
+}
+
+.mbti-content {
+  text-align: center;
+}
+
+.mbti-badge {
+  font-size: 1.8rem; /* Smaller font */
+  font-weight: 700;
+  color: #00cec9;
+  text-shadow: 2px 2px 0px #fff;
+  margin-bottom: 10px;
+  display: inline-block;
+  transform: rotate(-2deg);
+  white-space: nowrap; /* Prevent line break */
+  padding: 5px 15px;
+  border: 2px solid var(--border-color); /* Add border for badge look */
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.mbti-desc {
+  background: #fff;
+  padding: 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 15px;
+  font-size: 1.1rem;
+}
+
+/* Appearance */
+.appearance-card {
+  background: #ffeaa7;
+}
+
+.appearance-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Survival Guide */
+.guide-card {
+  background: #a29bfe;
+  color: white;
+}
+
+.guide-card .card-title {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.5);
+}
+
+.guide-content {
+  background: rgba(255,255,255,0.2);
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px dashed rgba(255,255,255,0.5);
+  font-size: 1.1rem;
+}
+
+/* Footer */
+.footer-action {
+  margin-top: 30px;
+}
+
+.footer-action button {
+  background: #fff !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--border-color) !important;
+  box-shadow: 4px 4px 0px var(--border-color) !important;
+}
+
+/* Animations */
+.fade-in { animation: fadeIn 0.8s; }
+.slide-up { animation: slideUp 0.6s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Vant Overrides */
+.rv-steps__item--active {
+  color: var(--primary-color) !important;
+}

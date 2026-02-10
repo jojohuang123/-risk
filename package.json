@@ -1,0 +1,10 @@
+{
+  "name": "ai-friend-analyzer",
+  "version": "1.0.0",
+  "scripts": {
+    "install-all": "cd frontend && npm install && cd ../backend && npm install",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && node index.js",
+    "start": "echo '请分别在两个终端运行 npm run dev:backend 和 npm run dev:frontend'"
+  }
+}
