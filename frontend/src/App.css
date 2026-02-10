@@ -4,7 +4,7 @@
 :root {
   --primary-color: #ff9f43; /* Pastel Orange */
   --secondary-color: #54a0ff; /* Pastel Blue */
-  --accent-color: #ff6b6b; /* Pastel Red */
+  --accent-color: #fd79a8; /* Hot Pink (Fun, not dangerous) */
   --bg-color: #fdfcf0; /* Paper-like off-white */
   --text-primary: #2d3436;
   --text-secondary: #636e72;
@@ -20,6 +20,10 @@ body {
   background-size: 20px 20px;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+}
+
+span, div, p, h1, h2, h3, h4, h5, h6, button, input, textarea {
+  font-family: 'Patrick Hand', cursive !important;
 }
 
 .app-container {
@@ -60,7 +64,7 @@ body {
 }
 
 .hero-text h1 {
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   font-weight: 700;
   margin: 0;
   text-shadow: 3px 3px 0px white, 5px 5px 0px rgba(0,0,0,0.1);
@@ -68,7 +72,7 @@ body {
 }
 
 .hero-text p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-top: 10px;
   background: white;
   display: inline-block;
@@ -95,7 +99,7 @@ body {
 }
 
 .card-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 16px;
   display: flex;
@@ -234,7 +238,7 @@ body {
 
 .danger-title {
   font-size: 1.5rem;
-  background: #ff6b6b;
+  background: var(--accent-color);
   color: white;
   padding: 5px 15px;
   border-radius: 15px;
@@ -264,17 +268,17 @@ body {
   height: 100%;
   background: repeating-linear-gradient(
     -45deg,
-    #ff6b6b,
-    #ff6b6b 10px,
-    #ff4757 10px,
-    #ff4757 20px
+    var(--accent-color),
+    var(--accent-color) 10px,
+    #ff9ff3 10px,
+    #ff9ff3 20px
   );
   border-right: 3px solid var(--border-color);
   transition: width 1s ease-out;
 }
 
 .danger-score {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 900;
   color: var(--text-primary);
   margin-top: 10px;
@@ -335,11 +339,12 @@ body {
   font-size: 1.1rem;
   color: var(--text-primary);
   line-height: 1.4;
+  word-break: break-word;
 }
 
 /* MBTI */
 .mbti-card {
-  background: #e0f7fa;
+  background: #fff;
 }
 
 .mbti-content {
@@ -347,7 +352,7 @@ body {
 }
 
 .mbti-badge {
-  font-size: 1.8rem; /* Smaller font */
+  font-size: 1.5rem; /* Smaller font */
   font-weight: 700;
   color: #00cec9;
   text-shadow: 2px 2px 0px #fff;
@@ -372,31 +377,33 @@ body {
 
 /* Appearance */
 .appearance-card {
-  background: #ffeaa7;
+  background: #fff;
 }
 
 .appearance-text {
   font-size: 1.1rem;
   line-height: 1.6;
+  word-break: break-word;
 }
 
 /* Survival Guide */
 .guide-card {
-  background: #a29bfe;
-  color: white;
+  background: #fff;
+  color: var(--text-primary);
 }
 
 .guide-card .card-title {
-  color: white;
-  border-bottom-color: rgba(255,255,255,0.5);
+  color: var(--text-primary);
+  border-bottom-color: #dfe6e9;
 }
 
 .guide-content {
-  background: rgba(255,255,255,0.2);
+  background: #eeeaf9;
   padding: 15px;
   border-radius: 10px;
-  border: 2px dashed rgba(255,255,255,0.5);
+  border: 2px dashed #a29bfe;
   font-size: 1.1rem;
+  word-break: break-word;
 }
 
 /* Footer */
