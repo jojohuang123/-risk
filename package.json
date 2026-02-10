@@ -1,10 +1,12 @@
 {
-  "name": "ai-friend-analyzer",
+  "name": "risk-app",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "install-all": "cd frontend && npm install && cd ../backend && npm install",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && node index.js",
-    "start": "echo '请分别在两个终端运行 npm run dev:backend 和 npm run dev:frontend'"
+    "install-all": "npm install --prefix frontend && npm install --prefix api",
+    "build": "npm install --prefix frontend && npm run build --prefix frontend && mkdir -p dist && cp -r frontend/dist/* dist/"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
