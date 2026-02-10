@@ -7,6 +7,6 @@
     "build": "npm install --prefix frontend && npm run build --prefix frontend && mkdir -p dist && cp -r frontend/dist/* dist/"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
