@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Button, Uploader, Toast, Tag, NoticeBar, Steps, Circle } from 'react-vant'
-import { Photograph, Fire, Warning, Checked, Manager, Like } from '@react-vant/icons'
+import { Button, Uploader, Toast, NoticeBar, Steps } from 'react-vant'
+import { Photograph, Warning } from '@react-vant/icons'
 import axios from 'axios'
 import './App.css'
 
