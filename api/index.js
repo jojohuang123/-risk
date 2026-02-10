@@ -35,12 +35,18 @@ const upload = multer({
 });
 
 // Health check endpoint
-app.get('/', (req, res) => {
-    res.json({ status: 'ok', message: 'WeChat Moments AI Analysis Backend is running' });
+app.get(['/', '/api/health'], (req, res) => {
+    res.json({ 
+        status: 'ok', 
+        message: 'WeChat Moments AI Analysis Backend is running',
+        timestamp: new Date().toISOString(),
+        path: req.path
+    });
 });
 
 // Analyze endpoint
-app.post('/api/analyze', (req, res, next) => {
+// Support both /api/analyze (standard) and /analyze (if rewrites strip prefix)
+app.post(['/api/analyze', '/analyze'], (req, res, next) => {
     // Note: Vercel serverless functions have a 4.5MB payload limit by default.
     // We are using memoryStorage, so large files might hit memory limits or timeouts.
     // For production, we should handle this gracefully or suggest fewer images.
